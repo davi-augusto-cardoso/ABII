@@ -1,7 +1,7 @@
 
 from imports import *
 from classifier import Classifier
-
+import sys
 
 class Player:
     color       = ""
@@ -27,9 +27,13 @@ class Visualizer:
     digitsClassifier    = ''
     
     def __init__(self, path):
-        os.chdir(r"C:\Users\Davi Augusto\Desktop\ABII\data")
-        self.regionClassifier = Classifier(r"../data/regionsModel.h5", r"../data/regions.txt")
-        self.digitsClassifier = Classifier(r"../data/regionsModel.h5", r"../data/regions.txt")
+        os.chdir(r"C:\Users\Rodrigo\Documents\Projetos\ABII\data")
+        #file exists
+        if os.path.isfile(r"regionsModel.h5"):
+            print("Modelo encontrado")
+            #sys.exit()
+        self.regionClassifier = Classifier(r"regionsModel.h5", r"regions.txt")
+        self.digitsClassifier = Classifier(r"regionsModel.h5", r"regions.txt")
         self.OpenImage(path)
         
     # Captura o frame atual da tela
@@ -76,7 +80,7 @@ class Visualizer:
     # Retorna as imagens para serem classificadas
     def Contourning(self):
         # Extrai todos os contornos da imagem
-        contours, hir = cv2.findContours(self.imageProcessing, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_L1)
+        contours = cv2.findContours(self.imageProcessing, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_L1)
         
         images = [] # -> Armazena os recortes das imagens contornadas
         
@@ -90,9 +94,12 @@ class Visualizer:
                 # Recortando imagem
                 image = self.imageProcessing[y : y+h, x : x+w]
                 # Pega os contornos da imagem
-                cntrs, h = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+                cntrs = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
                 # Encontra o maior contorno
+                #print(cntrs)
                 largest_contour = max(cntrs, key=cv2.contourArea)
+                #get largest contour
+                
                 # Recupera os vétices do maior contorno
                 approx = cv2.approxPolyDP(largest_contour, 1, True)
                 # Cria uam imagem preta
@@ -116,7 +123,7 @@ class Visualizer:
         self.PreProcess()
         
         images = self.Contourning()
-        
+        self.ShowRegions(images)
         for image in images:
             region = self.regionClassifier.Classify(image)
             

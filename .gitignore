@@ -1,0 +1,10 @@
+src/*.pyc
+src/__pycache__/classifier.cpython-36.pyc
+src/__pycache__/classifier.cpython-39.pyc
+src/__pycache__/imports.cpython-36.pyc
+src/__pycache__/imports.cpython-39.pyc
+src/__pycache__/text_recognition_class.cpython-38.pyc
+src/__pycache__/utils.cpython-36.pyc
+src/__pycache__/utils.cpython-38.pyc
+src/__pycache__/visualizer.cpython-36.pyc
+src/__pycache__/visualizer.cpython-39.pyc
